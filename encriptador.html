@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>E N C R I P T A D O R</title>
+        <link rel="stylesheet" href="reset.css">
+        <link rel="stylesheet" href="style.css">   
+    </head>
+
+    <body>
+        <header>
+            <img id="banner" src="imagenes/logoalura.jpg" alt="Logo del encriptador">
+            <h1 class="titulo">E N C R I P T A D O R</h1>            
+        </header>
+
+        <main>
+            <div>
+                <textarea class="textarea1" cols="68" rows="21" id="texto1" required placeholder="Ingresa el texto aqui, solo letras minúsculas y sin acentos"></textarea>
+                <button type="button" id="boton1">Encriptar</button>
+                <button type="button" id="boton2">Desencriptar</button>
+            </div>
+            <div>                   
+                <textarea class="textarea2" cols="68" rows="21" id="texto2" placeholder="Ningún mensaje fue encontrado"></textarea>
+                <button type="button" id="boton3" disabled>Copiar</button>
+                <button type="button" id="boton4">Limpiar</button>
+            </div>            
+        </main>
+
+        <script>
+            
+            var salida = "";
+            var encriptado = [];
+            var operacion = true; 
+            var validacion = true;
+            
+            function validarLetras(textoIngresado)
+            {
+                var noPermitidas = "áéíóúABCDEFGHIJKLMNÑOPQRSTUVWXYZ"                
+
+                for (var pos = 0; pos < noPermitidas.length; pos++)
+                {
+                    if (textoIngresado.includes(noPermitidas[pos]))
+                    {
+                        alert("no son permitidas letras mayúsculas ni vocales con tilde");
+                        validacion = false;
+                        break;
+                    }
+                }
+            }            
+
+            function encriptar()
+            {
+                var texto = document.getElementById("texto1").value;
+
+                if (texto == "")
+                {
+                    alert("Por favor ingrese el texto");
+                }
+                else
+                {
+                    validarLetras(texto);
+                
+                    salida = "";
+                    encriptado = [];
+                    operacion = true;
+                    
+                    button3.disabled = false;
+
+                    if (validacion)
+                    {
+                        for (var pos = 0; pos < texto.length; pos++)
+                        {
+                            if (texto[pos] == "a")
+                            {
+                                encriptado.push("ai");
+                            }
+                            else if (texto[pos] == "e")
+                            {
+                                encriptado.push("enter");
+                            } 
+                            else if (texto[pos] == "i")
+                            {                        
+                                encriptado.push("imes");
+                            }
+                            else if (texto[pos] == "o")
+                            {                       
+                                encriptado.push("ober");
+                            }
+                            else if (texto[pos] == "u")
+                            {                        
+                                encriptado.push("ufat");
+                            }
+                            else
+                            {
+                                encriptado.push(texto[pos]);
+                            }
+                        }                
+
+                        for (var pos = 0; pos < encriptado.length; pos++)
+                        {
+                            salida = salida + encriptado[pos];   
+                        }
+                        
+                        document.getElementById("texto2").value = salida;
+                        button1.disabled = true;
+                        button2.disabled = true;
+                    }
+                    else
+                    {
+                        location.reload();
+                    }               
+                }                
+            }
+
+            function desencriptar()
+            {
+                encriptado = document.getElementById("texto1").value;
+
+                if (encriptado == "")
+                {
+                    alert("Por favor ingrese el texto");
+                }
+                else
+                {
+                    validarLetras(encriptado);
+                
+                    salida = "";
+                    desencriptado = [];
+                    operacion = false;
+                    
+                    button3.disabled = false;
+
+                    if (validacion)
+                    {
+                        for (var pos = 0; pos < encriptado.length; pos++)
+                        {
+                            if (encriptado[pos] == "a" && encriptado[pos+1] == "i")
+                            {
+                                desencriptado.push("a");
+                                pos = pos + 1;
+                            }
+                            else if (encriptado[pos] == "e" && encriptado[pos+1] == "n" && encriptado[pos+2] == "t" && encriptado[pos+3] == "e" && encriptado[pos+4] == "r")
+                            {
+                                desencriptado.push("e");
+                                pos = pos + 4
+                            } 
+                            else if (encriptado[pos] == "i" && encriptado[pos+1] == "m" && encriptado[pos+2] == "e" && encriptado[pos+3] == "s")
+                            {
+                                desencriptado.push("i");
+                                pos = pos + 3;
+                            }
+                            else if (encriptado[pos] == "o" && encriptado[pos+1] == "b" && encriptado[pos+2] == "e" && encriptado[pos+3] == "r")
+                            {
+                                desencriptado.push("o");
+                                pos = pos + 3;
+                            }
+                            else if (encriptado[pos] == "u" && encriptado[pos+1] == "f" && encriptado[pos+2] == "a" && encriptado[pos+3] == "t")
+                            {
+                                desencriptado.push("u");
+                                pos = pos + 3;
+                            }
+                            else
+                            {
+                                desencriptado.push(encriptado[pos]);
+                            }
+                        }                
+
+                        for (var pos = 0; pos < desencriptado.length; pos++)
+                        {
+                            salida = salida + desencriptado[pos];  
+                        }
+
+                        document.getElementById("texto2").value = salida;
+                    }
+                    else
+                    {
+                        location.reload();
+                    }   
+                }             
+            }
+
+            function copiar()
+            {
+                if (operacion == true)
+                {
+                    document.getElementById("texto2").value = "";
+                    document.getElementById("texto1").value = salida;
+                    button1.disabled = true;
+                    button2.disabled = false;
+                }
+                else
+                {
+                    document.getElementById("texto2").value = "";
+                    document.getElementById("texto1").value = salida;
+                    button1.disabled = false;
+                    button2.disabled = true;
+                }                
+            }
+            
+            function limpiar()
+            {
+                location.reload();
+            }            
+            
+            
+            
+            var button1 = document.getElementById("boton1");
+            button1.onclick = encriptar;
+
+            var button2 = document.getElementById("boton2");
+            button2.onclick = desencriptar;         
+
+            var button3 = document.getElementById("boton3");
+            button3.onclick = copiar;
+
+            var button4 = document.getElementById("boton4");
+            button4.onclick = limpiar;
+            
+        </script>
+
+        <footer>
+            <img id="banner" src="imagenes/logoalura.jpg" alt="Logo del encriptador">
+            <p class="copyright">&copy Copyright DFL Sistemas - Alura 2022</p>
+            <p class="copyright">Diego Fernando Londoño</p>
+        </footer>
+
+    </body>
+</html>
